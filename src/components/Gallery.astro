@@ -1,0 +1,187 @@
+---
+// Gallery.astro — Editorial photo gallery with CSS grid masonry
+---
+
+<section
+  id="gallery"
+  class="gallery-section section-py"
+  aria-labelledby="gallery-heading"
+>
+  <div class="container-base">
+    <!-- Header -->
+    <div class="gallery-header reveal">
+      <p class="eyebrow mb-5">Gallery</p>
+      <h2 id="gallery-heading" class="section-heading mb-4">
+        Sekelumit dari<br />
+        <em class="italic" style="color: var(--color-caramel)">suasana kami.</em>
+      </h2>
+    </div>
+
+    <!-- Masonry-like editorial grid -->
+    <div class="gallery-grid" role="list">
+      <!-- Item 1 — Large landscape -->
+      <figure class="gallery-item gallery-item--wide reveal-fade" role="listitem">
+        <img
+          src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=1200&q=80&auto=format&fit=crop"
+          alt="Interior coffee shop yang hangat dengan pencahayaan amber dan meja kayu"
+          width="1200"
+          height="800"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+
+      <!-- Item 2 — Portrait -->
+      <figure class="gallery-item gallery-item--tall reveal-fade delay-100" role="listitem">
+        <img
+          src="https://images.unsplash.com/photo-1610889556528-9a770e32642f?w=600&q=80&auto=format&fit=crop"
+          alt="Es kopi susu dalam gelas tinggi yang segar"
+          width="600"
+          height="800"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+
+      <!-- Item 3 — Square -->
+      <figure class="gallery-item reveal-fade delay-200" role="listitem">
+        <img
+          src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=600&q=80&auto=format&fit=crop"
+          alt="Barista sedang membuat pour over coffee dengan penuh konsentrasi"
+          width="600"
+          height="600"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+
+      <!-- Item 4 — Square -->
+      <figure class="gallery-item reveal-fade delay-300" role="listitem">
+        <img
+          src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=600&q=80&auto=format&fit=crop"
+          alt="Detail espresso yang sempurna dalam cangkir keramik putih"
+          width="600"
+          height="600"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+
+      <!-- Item 5 — Landscape -->
+      <figure class="gallery-item gallery-item--wide2 reveal-fade delay-200" role="listitem">
+        <img
+          src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1000&q=80&auto=format&fit=crop"
+          alt="Sudut cozy coffee shop dengan tanaman hijau dan cahaya natural"
+          width="1000"
+          height="667"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+
+      <!-- Item 6 — Portrait -->
+      <figure class="gallery-item reveal-fade delay-100" role="listitem">
+        <img
+          src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=600&q=80&auto=format&fit=crop"
+          alt="Croissant mentega yang baru dipanggang di atas piring keramik"
+          width="600"
+          height="600"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+
+      <!-- Item 7 — Wide -->
+      <figure class="gallery-item gallery-item--tall reveal-fade delay-200" role="listitem">
+        <img
+          src="https://images.unsplash.com/photo-1453614512568-c4024d13c247?w=600&q=80&auto=format&fit=crop"
+          alt="Tangan memegang secangkir kopi hangat di meja kayu dengan buku"
+          width="600"
+          height="800"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+    </div>
+  </div>
+</section>
+
+<style>
+  .gallery-section {
+    background-color: var(--color-cream-dark);
+  }
+
+  .gallery-header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+  }
+
+  /* Editorial grid */
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: 200px;
+    gap: 0.75rem;
+  }
+
+  @media (min-width: 768px) {
+    .gallery-grid {
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: 240px;
+      gap: 1rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .gallery-grid {
+      grid-template-columns: repeat(4, 1fr);
+      grid-auto-rows: 260px;
+    }
+  }
+
+  /* Gallery item base */
+  .gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+    margin: 0;
+    cursor: pointer;
+  }
+
+  .gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .gallery-item:hover img {
+    transform: scale(1.05);
+  }
+
+  /* Span variants */
+  .gallery-item--wide {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+
+  .gallery-item--tall {
+    grid-row: span 2;
+  }
+
+  .gallery-item--wide2 {
+    grid-column: span 2;
+  }
+
+  /* Mobile: simplify spans */
+  @media (max-width: 639px) {
+    .gallery-item--wide {
+      grid-column: span 2;
+      grid-row: span 1;
+    }
+
+    .gallery-item--tall {
+      grid-row: span 2;
+    }
+  }
+</style>

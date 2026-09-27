@@ -1,0 +1,9 @@
+---
+# [COFFEE SHOP NAME] Robots.txt
+# Adjust before deployment
+---
+
+User-agent: *
+Allow: /
+
+Sitemap: https://[WEBSITE-URL]/sitemap.xml

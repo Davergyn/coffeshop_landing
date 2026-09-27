@@ -1,0 +1,186 @@
+---
+// Menu.astro — Full menu section with category tabs (CSS-only)
+
+import MenuCard from './MenuCard.astro';
+import { menuItems, categoryLabels } from '../data/menu';
+import type { MenuItem } from '../data/menu';
+
+const categories: MenuItem['category'][] = ['coffee', 'non-coffee', 'tea', 'food', 'snack'];
+---
+
+<section
+  id="full-menu"
+  class="menu-section section-py"
+  aria-labelledby="menu-heading"
+>
+  <div class="container-base">
+    <!-- Header -->
+    <div class="menu-header reveal">
+      <p class="eyebrow mb-5">Full Menu</p>
+      <h2 id="menu-heading" class="section-heading mb-4">
+        Temukan minuman<br />
+        <em class="italic" style="color: var(--color-caramel)">favoritmu.</em>
+      </h2>
+      <p class="section-sub">
+        Setiap minuman dibuat fresh, setiap hari. Setiap makanan dibuat
+        dengan bahan-bahan segar pilihan.
+      </p>
+    </div>
+
+    <!-- Tab system (CSS-only using radio + label trick) -->
+    <div class="menu-tabs-wrap" role="tablist" aria-label="Kategori menu">
+      <!-- Hidden radio inputs — no JS needed for tabs -->
+      {categories.map((cat, i) => (
+        <input
+          type="radio"
+          name="menu-tab"
+          id={`tab-${cat}`}
+          class="sr-only"
+          checked={i === 0}
+          aria-label={categoryLabels[cat]}
+        />
+      ))}
+
+      <!-- Tab labels -->
+      <div class="tab-labels">
+        {categories.map((cat) => (
+          <label
+            for={`tab-${cat}`}
+            class="tab-label"
+            role="tab"
+          >
+            {categoryLabels[cat]}
+          </label>
+        ))}
+      </div>
+
+      <!-- Tab panels -->
+      <div class="tab-panels">
+        {categories.map((cat) => (
+          <div
+            class="tab-panel"
+            id={`panel-${cat}`}
+            role="tabpanel"
+            aria-labelledby={`tab-${cat}`}
+          >
+            <div class="menu-list">
+              {menuItems
+                .filter((item) => item.category === cat)
+                .map((item) => (
+                  <MenuCard item={item} variant="list" showImage={false} />
+                ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .menu-section {
+    background-color: var(--color-cream);
+  }
+
+  .menu-header {
+    text-align: center;
+    max-width: 600px;
+    margin-inline: auto;
+    margin-bottom: 3.5rem;
+  }
+
+  .menu-header .section-sub {
+    margin-inline: auto;
+  }
+
+  /* ── TAB SYSTEM (CSS-only) ── */
+  .menu-tabs-wrap {
+    max-width: 840px;
+    margin-inline: auto;
+  }
+
+  /* Hide all radio inputs but keep them accessible */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  /* Tab labels container */
+  .tab-labels {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .tab-label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.6rem 1.375rem;
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border-radius: 9999px;
+    border: 1.5px solid var(--color-border);
+    color: var(--color-muted);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+    min-height: 44px;
+  }
+
+  .tab-label:hover {
+    border-color: var(--color-caramel);
+    color: var(--color-brown);
+  }
+
+  /* Tab panels — hide all by default */
+  .tab-panel {
+    display: none;
+  }
+
+  /* CSS magic: when radio is checked, show the corresponding panel and style label */
+  #tab-coffee:checked ~ .tab-panels #panel-coffee,
+  #tab-non-coffee:checked ~ .tab-panels #panel-non-coffee,
+  #tab-tea:checked ~ .tab-panels #panel-tea,
+  #tab-food:checked ~ .tab-panels #panel-food,
+  #tab-snack:checked ~ .tab-panels #panel-snack {
+    display: block;
+  }
+
+  /* Active tab label styling */
+  #tab-coffee:checked ~ .tab-labels label[for="tab-coffee"],
+  #tab-non-coffee:checked ~ .tab-labels label[for="tab-non-coffee"],
+  #tab-tea:checked ~ .tab-labels label[for="tab-tea"],
+  #tab-food:checked ~ .tab-labels label[for="tab-food"],
+  #tab-snack:checked ~ .tab-labels label[for="tab-snack"] {
+    background-color: var(--color-espresso);
+    border-color: var(--color-espresso);
+    color: var(--color-cream);
+  }
+
+  /* Menu list */
+  .menu-list {
+    background-color: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 0 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .menu-list {
+      padding: 0 2rem;
+    }
+  }
+</style>

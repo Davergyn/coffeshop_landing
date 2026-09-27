@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <!-- Background circle -->
+  <circle cx="16" cy="16" r="15" fill="#1C1410"/>
+  <!-- Coffee bean shape -->
+  <ellipse cx="16" cy="16" rx="9" ry="7" stroke="#C8A882" stroke-width="1.5" fill="none"/>
+  <!-- Bean center line -->
+  <path d="M16 9 C16 9 12 13 12 16 C12 19 16 23 16 23 C16 23 20 19 20 16 C20 13 16 9 16 9Z"
+        stroke="#C8A882" stroke-width="1" fill="none"/>
+</svg>

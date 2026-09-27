@@ -1,0 +1,16 @@
+{
+  "name": "[COFFEE SHOP NAME]",
+  "short_name": "[COFFEE SHOP NAME]",
+  "description": "Specialty coffee & ruang yang hangat",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#1C1410",
+  "theme_color": "#1C1410",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    }
+  ]
+}

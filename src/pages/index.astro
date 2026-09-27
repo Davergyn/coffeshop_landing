@@ -1,0 +1,37 @@
+---
+// pages/index.astro — Main landing page
+
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import SignatureMenu from '../components/SignatureMenu.astro';
+import Menu from '../components/Menu.astro';
+import Gallery from '../components/Gallery.astro';
+import Experience from '../components/Experience.astro';
+import Location from '../components/Location.astro';
+import CTA from '../components/CTA.astro';
+import Footer from '../components/Footer.astro';
+
+import '../styles/global.css';
+---
+
+<Layout
+  title="[COFFEE SHOP NAME] — Specialty Coffee & Ruang yang Hangat di [CITY]"
+  description="Nikmati specialty coffee, suasana yang hangat, dan momen yang tak terlupakan di [COFFEE SHOP NAME]. Berlokasi di [CITY], buka setiap hari pukul 08:00–22:00."
+>
+  <Navbar />
+
+  <main>
+    <Hero />
+    <About />
+    <SignatureMenu />
+    <Menu />
+    <Gallery />
+    <Experience />
+    <Location />
+    <CTA />
+  </main>
+
+  <Footer />
+</Layout>

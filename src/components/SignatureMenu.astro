@@ -1,0 +1,97 @@
+---
+// SignatureMenu.astro — Signature menu section
+
+import MenuCard from './MenuCard.astro';
+import { signatureMenu } from '../data/menu';
+
+const whatsappNumber = "[WHATSAPP NUMBER]";
+const whatsappUrl = `https://wa.me/${whatsappNumber}?text=Halo,%20saya%20ingin%20memesan`;
+---
+
+<section
+  class="signature-section section-py"
+  aria-labelledby="signature-heading"
+>
+  <div class="container-base">
+    <!-- Header -->
+    <div class="sig-header reveal">
+      <p class="eyebrow mb-5">Menu Unggulan</p>
+      <h2 id="signature-heading" class="section-heading mb-4">
+        Yang selalu dipesan<br />
+        <em class="italic" style="color: var(--color-caramel)">kembali dan kembali.</em>
+      </h2>
+      <p class="section-sub mb-12">
+        Pilihan signature kami — dibuat dengan bahan terbaik dan teknik yang
+        telah kami sempurnakan.
+      </p>
+    </div>
+
+    <!-- Cards grid -->
+    <div class="sig-grid">
+      {signatureMenu.slice(0, 6).map((item, i) => (
+        <div class={`reveal delay-${(i % 3 + 1) * 100}`}>
+          <MenuCard item={item} variant="signature" />
+        </div>
+      ))}
+    </div>
+
+    <!-- CTA -->
+    <div class="sig-cta reveal">
+      <a href="#full-menu" class="btn btn-secondary">
+        Lihat Menu Lengkap
+      </a>
+      <a
+        href={whatsappUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn btn-primary"
+        id="signature-whatsapp-order"
+      >
+        Order Sekarang
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .signature-section {
+    background-color: var(--color-cream-dark);
+  }
+
+  .sig-header {
+    text-align: center;
+    max-width: 600px;
+    margin-inline: auto;
+  }
+
+  .sig-header .section-sub {
+    margin-inline: auto;
+  }
+
+  .sig-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 3.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .sig-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .sig-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .sig-cta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+</style>

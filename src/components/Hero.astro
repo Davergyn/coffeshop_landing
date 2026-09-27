@@ -1,0 +1,145 @@
+---
+// Hero.astro — Hero section
+
+const whatsappNumber = "[WHATSAPP NUMBER]";
+const whatsappUrl = `https://wa.me/${whatsappNumber}?text=Halo,%20saya%20ingin%20memesan`;
+---
+
+<section
+  id="home"
+  class="hero-section relative min-h-screen flex items-center overflow-hidden"
+  aria-label="Hero"
+>
+  <!-- Background image layer -->
+  <div class="hero-bg absolute inset-0" aria-hidden="true">
+    <img
+      src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1920&q=80&auto=format&fit=crop"
+      alt=""
+      width="1920"
+      height="1080"
+      class="w-full h-full object-cover"
+      fetchpriority="high"
+      decoding="async"
+    />
+    <!-- Overlay -->
+    <div class="hero-overlay absolute inset-0"></div>
+  </div>
+
+  <!-- Content -->
+  <div class="container-base relative z-10 pt-28 pb-20 md:pt-32 md:pb-24">
+    <div class="max-w-3xl">
+      <!-- Eyebrow -->
+      <p class="eyebrow text-cream/80 mb-6 animate-fade-up" style="--eyebrow-color: rgba(200,168,130,0.9);">
+        Specialty Coffee • [CITY]
+      </p>
+
+      <!-- Headline -->
+      <h1 class="hero-headline animate-fade-up delay-200">
+        Kopi yang Baik,<br />
+        <em>Momen yang Nyata.</em>
+      </h1>
+
+      <!-- Description -->
+      <p class="hero-desc animate-fade-up delay-300">
+        Tempat di mana setiap tegukan punya cerita. Specialty coffee pilihan,
+        suasana yang hangat, dan ruang untuk memperlambat hari‑harimu.
+      </p>
+
+      <!-- CTAs -->
+      <div class="flex flex-wrap gap-4 animate-fade-up delay-400">
+        <a
+          href="#menu"
+          class="btn btn-primary"
+          id="hero-explore-menu"
+        >
+          Lihat Menu
+        </a>
+        <a
+          href={whatsappUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-ghost"
+          id="hero-whatsapp"
+        >
+          Order via WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div
+    class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-fade-up delay-600"
+    aria-hidden="true"
+  >
+    <span class="text-cream/50 text-xs tracking-widest uppercase font-sans">Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<style>
+  .hero-section {
+    background-color: var(--color-espresso);
+  }
+
+  .hero-bg img {
+    filter: saturate(0.85);
+  }
+
+  .hero-overlay {
+    background: linear-gradient(
+      to right,
+      rgba(28, 20, 16, 0.78) 0%,
+      rgba(28, 20, 16, 0.55) 50%,
+      rgba(28, 20, 16, 0.3) 100%
+    );
+  }
+
+  /* Hero headline */
+  .hero-headline {
+    font-family: var(--font-display);
+    font-size: clamp(2.6rem, 6.5vw, 5.5rem);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--color-cream);
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-headline em {
+    font-style: italic;
+    color: var(--color-latte);
+  }
+
+  /* Hero description */
+  .hero-desc {
+    font-size: clamp(1rem, 2vw, 1.125rem);
+    line-height: 1.75;
+    color: rgba(250, 247, 242, 0.75);
+    margin-bottom: 2.5rem;
+    max-width: 46ch;
+  }
+
+  /* Eyebrow override for dark bg */
+  .eyebrow {
+    color: var(--color-latte) !important;
+  }
+
+  .eyebrow::before,
+  .eyebrow::after {
+    background-color: var(--color-latte) !important;
+  }
+
+  /* Scroll indicator */
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, rgba(250,247,242,0.5), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.4; transform: scaleY(1); }
+    50%       { opacity: 0.9; transform: scaleY(1.2); }
+  }
+</style>

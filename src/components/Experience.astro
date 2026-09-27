@@ -1,0 +1,191 @@
+---
+// Experience.astro — Why visit us / Experience section
+
+const experiences = [
+  {
+    id: "coffee",
+    title: "Kopi yang Baik",
+    description:
+      "Specialty coffee dari single origin pilihan, diseduh dengan teknik yang tepat untuk setiap karakter biji kopi.",
+    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 8h1a4 4 0 0 1 0 8h-1"/>
+      <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
+      <line x1="6" y1="1" x2="6" y2="4"/>
+      <line x1="10" y1="1" x2="10" y2="4"/>
+      <line x1="14" y1="1" x2="14" y2="4"/>
+    </svg>`,
+  },
+  {
+    id: "space",
+    title: "Ruang yang Nyaman",
+    description:
+      "Interior yang hangat dan pencahayaan yang tepat — cocok untuk bekerja, bertemu teman, atau sekadar menyendiri.",
+    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+      <polyline points="9 22 9 12 15 12 15 22"/>
+    </svg>`,
+  },
+  {
+    id: "wifi",
+    title: "WiFi Kencang",
+    description:
+      "Koneksi internet yang stabil untuk mendukung produktivitasmu. Karena kami tahu kamu butuh lebih dari sekadar kopi.",
+    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M5 12.55a11 11 0 0 1 14.08 0"/>
+      <path d="M1.42 9a16 16 0 0 1 21.16 0"/>
+      <path d="M8.53 16.11a6 6 0 0 1 6.95 0"/>
+      <line x1="12" y1="20" x2="12.01" y2="20"/>
+    </svg>`,
+  },
+  {
+    id: "food",
+    title: "Makanan Enak",
+    description:
+      "Pastry dan makanan yang dibuat fresh setiap hari. Pasangan sempurna untuk kopi atau waktu bersantaimu.",
+    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 8h1a4 4 0 0 1 0 8h-1"/>
+      <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
+      <line x1="6" y1="1" x2="6" y2="4"/>
+      <line x1="10" y1="1" x2="10" y2="4"/>
+      <line x1="14" y1="1" x2="14" y2="4"/>
+    </svg>`,
+  },
+  {
+    id: "atmosphere",
+    title: "Suasana yang Tepat",
+    description:
+      "Musik yang dipilih dengan cermat, suhu yang nyaman, dan aroma kopi yang menyambut — semuanya kami siapkan.",
+    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="10"/>
+      <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+      <line x1="9" y1="9" x2="9.01" y2="9"/>
+      <line x1="15" y1="9" x2="15.01" y2="9"/>
+    </svg>`,
+  },
+  {
+    id: "community",
+    title: "Komunitas & Cerita",
+    description:
+      "Tempat di mana percakapan dimulai, kolaborasi terjadi, dan kenangan dibuat. Kamu selalu disambut di sini.",
+    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+      <circle cx="9" cy="7" r="4"/>
+      <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+      <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+    </svg>`,
+  },
+];
+---
+
+<section
+  class="experience-section section-py"
+  aria-labelledby="experience-heading"
+>
+  <div class="container-base">
+    <!-- Header -->
+    <div class="exp-header reveal">
+      <p class="eyebrow mb-5">Pengalaman Kami</p>
+      <h2 id="experience-heading" class="section-heading mb-4">
+        Bukan hanya kopi —<br />
+        <em class="italic" style="color: var(--color-caramel)">sebuah pengalaman.</em>
+      </h2>
+      <p class="section-sub">
+        Kami percaya bahwa waktu yang kamu habiskan bersama kami
+        harus terasa special, bukan sekadar biasa.
+      </p>
+    </div>
+
+    <!-- Experience grid -->
+    <ul class="exp-grid" role="list">
+      {experiences.map((exp, i) => (
+        <li class={`exp-item reveal delay-${(i % 3 + 1) * 100}`}>
+          <div class="exp-icon" aria-hidden="true" set:html={exp.icon} />
+          <h3 class="exp-title">{exp.title}</h3>
+          <p class="exp-desc">{exp.description}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .experience-section {
+    background-color: var(--color-cream);
+  }
+
+  .exp-header {
+    text-align: center;
+    max-width: 600px;
+    margin-inline: auto;
+    margin-bottom: 4rem;
+  }
+
+  .exp-header .section-sub {
+    margin-inline: auto;
+  }
+
+  /* Grid */
+  .exp-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    list-style: none;
+    padding: 0;
+  }
+
+  @media (min-width: 640px) {
+    .exp-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .exp-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2.5rem;
+    }
+  }
+
+  /* Item */
+  .exp-item {
+    padding: 2rem;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background-color: var(--color-white);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .exp-item:hover {
+    border-color: var(--color-sand);
+    box-shadow: 0 4px 24px rgba(28,20,16,0.07);
+  }
+
+  /* Icon */
+  .exp-icon {
+    width: 48px;
+    height: 48px;
+    background-color: var(--color-sand);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-brown);
+    margin-bottom: 1.25rem;
+  }
+
+  /* Title */
+  .exp-title {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: var(--color-espresso);
+    margin-bottom: 0.6rem;
+  }
+
+  /* Desc */
+  .exp-desc {
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: var(--color-muted);
+  }
+</style>

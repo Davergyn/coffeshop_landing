@@ -1,0 +1,131 @@
+---
+// Layout.astro — Root layout untuk semua halaman
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  canonicalUrl?: string;
+}
+
+const {
+  title = "[COFFEE SHOP NAME] — Specialty Coffee & Good Vibes",
+  description = "Nikmati specialty coffee, suasana hangat, dan momen yang tak terlupakan di [COFFEE SHOP NAME]. Hadir di [CITY], buka setiap hari.",
+  ogImage = "/og-image.jpg",
+  canonicalUrl = Astro.url.href,
+} = Astro.props;
+
+const siteName = "[COFFEE SHOP NAME]";
+---
+
+<!doctype html>
+<html lang="id" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Primary Meta -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={siteName} />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:locale" content="id_ID" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Preconnect fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Global styles injected via import in pages -->
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "CafeOrCoffeeShop",
+        "name": "[COFFEE SHOP NAME]",
+        "description": "[COFFEE SHOP DESCRIPTION]",
+        "url": "[WEBSITE URL]",
+        "telephone": "[WHATSAPP NUMBER]",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "[STREET ADDRESS]",
+          "addressLocality": "[CITY]",
+          "addressRegion": "[PROVINCE]",
+          "addressCountry": "ID"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": "[LATITUDE]",
+          "longitude": "[LONGITUDE]"
+        },
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": [
+              "Monday", "Tuesday", "Wednesday", "Thursday",
+              "Friday", "Saturday", "Sunday"
+            ],
+            "opens": "08:00",
+            "closes": "22:00"
+          }
+        ],
+        "servesCuisine": ["Coffee", "Specialty Coffee", "Indonesian Coffee"],
+        "priceRange": "Rp15.000 - Rp40.000",
+        "sameAs": [
+          "[INSTAGRAM URL]"
+        ],
+        "image": "[WEBSITE URL]/og-image.jpg"
+      }
+    </script>
+  </head>
+
+  <body>
+    <slot />
+
+    <!-- Scroll reveal script -->
+    <script>
+      // Intersection Observer for scroll reveal
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+      );
+
+      // Observe all reveal elements
+      document.querySelectorAll('.reveal, .reveal-fade').forEach((el) => {
+        observer.observe(el);
+      });
+    </script>
+  </body>
+</html>
