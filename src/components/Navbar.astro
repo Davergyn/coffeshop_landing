@@ -1,5 +1,5 @@
 ---
-// Navbar.astro — Sticky responsive navigation
+// Navbar.astro - Sticky responsive navigation
 
 const navLinks = [
   { label: "Home",     href: "#home" },
@@ -9,7 +9,7 @@ const navLinks = [
   { label: "Location", href: "#location" },
 ];
 
-const whatsappNumber = "[WHATSAPP NUMBER]"; // Contoh: 6281234567890
+const whatsappNumber = "[WHATSAPP NUMBER]";
 const whatsappUrl = `https://wa.me/${whatsappNumber}?text=Halo,%20saya%20ingin%20memesan`;
 ---
 
@@ -27,9 +27,8 @@ const whatsappUrl = `https://wa.me/${whatsappNumber}?text=Halo,%20saya%20ingin%2
       <a
         href="#home"
         class="logo flex items-center gap-2.5 focus-visible:outline-none"
-        aria-label="[COFFEE SHOP NAME] — Kembali ke atas"
+        aria-label="[COFFEE SHOP NAME] - Kembali ke atas"
       >
-        <!-- Coffee bean SVG icon -->
         <span class="logo-icon" aria-hidden="true">
           <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
             <ellipse cx="14" cy="14" rx="11" ry="9" fill="currentColor" opacity="0.12"/>
@@ -73,38 +72,40 @@ const whatsappUrl = `https://wa.me/${whatsappNumber}?text=Halo,%20saya%20ingin%2
         </a>
       </div>
 
-      <!-- Mobile Hamburger -->
+      <!-- Mobile Hamburger Button -->
       <button
         id="hamburger-btn"
-        class="lg:hidden p-2 -mr-2 rounded-lg"
+        class="lg:hidden hamburger-btn"
         aria-label="Toggle navigation menu"
         aria-expanded="false"
         aria-controls="mobile-menu"
+        type="button"
       >
-        <span class="hamburger-icon block" aria-hidden="true">
-          <span class="bar block w-6 h-0.5 rounded-full mb-1.5 transition-all duration-300 bg-current"></span>
-          <span class="bar block w-6 h-0.5 rounded-full mb-1.5 transition-all duration-300 bg-current"></span>
-          <span class="bar block w-4 h-0.5 rounded-full transition-all duration-300 bg-current"></span>
+        <span class="sr-only">Menu</span>
+        <span class="hamburger-icon" aria-hidden="true">
+          <span class="bar bar-1"></span>
+          <span class="bar bar-2"></span>
+          <span class="bar bar-3"></span>
         </span>
       </button>
     </nav>
   </div>
 
-  <!-- Mobile Menu -->
+  <!-- Mobile Menu Drawer -->
   <div
     id="mobile-menu"
-    class="lg:hidden mobile-menu overflow-hidden max-h-0 transition-all duration-300 ease-in-out"
+    class="mobile-menu lg:hidden"
     role="navigation"
     aria-label="Mobile navigation"
     aria-hidden="true"
   >
-    <div class="container-base pb-6">
-      <ul class="flex flex-col gap-1 list-none mb-6" role="list">
+    <div class="mobile-menu-inner container-base">
+      <ul class="mobile-nav-list list-none" role="list">
         {navLinks.map((link) => (
           <li>
             <a
               href={link.href}
-              class="mobile-nav-link block py-3 text-base font-medium border-b border-current/10 last:border-0"
+              class="mobile-nav-link"
             >
               {link.label}
             </a>
@@ -115,7 +116,7 @@ const whatsappUrl = `https://wa.me/${whatsappNumber}?text=Halo,%20saya%20ingin%2
         href={whatsappUrl}
         target="_blank"
         rel="noopener noreferrer"
-        class="btn btn-primary w-full text-center justify-center"
+        class="btn btn-primary mobile-wa-btn"
         id="mobile-whatsapp-cta"
         aria-label="Order via WhatsApp"
       >
@@ -128,8 +129,11 @@ const whatsappUrl = `https://wa.me/${whatsappNumber}?text=Halo,%20saya%20ingin%2
   </div>
 </header>
 
+
 <style>
-  /* Navbar default state — transparent */
+  /* ============================================================
+     NAVBAR BASE
+     ============================================================ */
   #navbar {
     color: var(--color-cream);
   }
@@ -138,7 +142,7 @@ const whatsappUrl = `https://wa.me/${whatsappNumber}?text=Halo,%20saya%20ingin%2
     color: var(--color-cream);
   }
 
-  /* Scrolled state — opaque */
+  /* Scrolled state */
   #navbar.scrolled {
     background-color: var(--color-cream);
     color: var(--color-espresso);
@@ -154,7 +158,20 @@ const whatsappUrl = `https://wa.me/${whatsappNumber}?text=Halo,%20saya%20ingin%2
     color: var(--color-cream);
   }
 
-  /* Nav links */
+  /* When mobile menu is open, always show cream bg on navbar */
+  #navbar.menu-open {
+    background-color: var(--color-cream);
+    color: var(--color-espresso);
+    box-shadow: 0 1px 0 var(--color-border);
+  }
+
+  #navbar.menu-open .logo-icon svg {
+    color: var(--color-espresso);
+  }
+
+  /* ============================================================
+     DESKTOP NAV LINKS
+     ============================================================ */
   .nav-link {
     opacity: 0.8;
     transition: opacity 0.2s ease;
@@ -180,79 +197,240 @@ const whatsappUrl = `https://wa.me/${whatsappNumber}?text=Halo,%20saya%20ingin%2
     width: 100%;
   }
 
-  /* Mobile nav */
+  /* ============================================================
+     HAMBURGER BUTTON
+     ============================================================ */
+  .hamburger-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 8px;
+    padding: 0;
+    color: inherit;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .hamburger-btn:focus-visible {
+    outline: 2px solid var(--color-caramel);
+    outline-offset: 2px;
+  }
+
+  @media (min-width: 1024px) {
+    .hamburger-btn {
+      display: none !important;
+    }
+  }
+
+  .hamburger-icon {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 22px;
+    height: 16px;
+    gap: 0;
+    position: relative;
+  }
+
+  .bar {
+    display: block;
+    width: 22px;
+    height: 2px;
+    border-radius: 2px;
+    background-color: currentColor;
+    position: absolute;
+    left: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease, width 0.3s ease;
+    transform-origin: center;
+  }
+
+  .bar-1 { top: 0; }
+  .bar-2 { top: 50%; transform: translateY(-50%); }
+  .bar-3 { bottom: 0; }
+
+  /* Active X state */
+  .hamburger-btn.active .bar-1 {
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+  }
+
+  .hamburger-btn.active .bar-2 {
+    opacity: 0;
+    transform: translateY(-50%) scaleX(0);
+  }
+
+  .hamburger-btn.active .bar-3 {
+    bottom: auto;
+    top: 50%;
+    transform: translateY(-50%) rotate(-45deg);
+  }
+
+  /* When scrolled or menu open, bars are dark */
+  #navbar.scrolled .hamburger-btn .bar,
+  #navbar.menu-open .hamburger-btn .bar {
+    background-color: var(--color-espresso);
+  }
+
+  /* sr-only utility */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  /* ============================================================
+     MOBILE MENU DRAWER (FIXED GAP & OVERFLOW ISSUE)
+     ============================================================ */
   .mobile-menu {
     background-color: var(--color-cream);
     color: var(--color-espresso);
+    display: grid;
+    grid-template-rows: 0fr;
+    visibility: hidden;
+    opacity: 0;
+    transition: grid-template-rows 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                visibility 0.35s ease,
+                opacity 0.25s ease,
+                box-shadow 0.35s ease;
+    overflow: hidden;
   }
 
   .mobile-menu.open {
-    max-height: 400px;
+    grid-template-rows: 1fr;
+    visibility: visible;
+    opacity: 1;
+    box-shadow: 0 4px 12px rgba(28, 20, 16, 0.08);
+  }
+
+  .mobile-menu-inner {
+    overflow: hidden;
+    min-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    transition: padding 0.35s ease;
+  }
+
+  .mobile-menu.open .mobile-menu-inner {
+    padding-top: 0.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  /* Nav list */
+  .mobile-nav-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 1.25rem;
   }
 
   .mobile-nav-link {
-    opacity: 0.8;
-    transition: opacity 0.2s ease;
+    display: block;
+    padding: 0.875rem 0;
+    font-family: var(--font-sans);
+    font-size: 1.05rem;
+    font-weight: 500;
     color: var(--color-espresso);
+    border-bottom: 1px solid var(--color-border);
+    opacity: 0.85;
+    transition: opacity 0.2s ease, padding-left 0.2s ease;
+    text-decoration: none;
   }
 
-  .mobile-nav-link:hover {
+  .mobile-nav-link:last-child {
+    border-bottom: none;
+  }
+
+  .mobile-nav-link:hover,
+  .mobile-nav-link:focus-visible {
     opacity: 1;
+    padding-left: 0.5rem;
   }
 
-  /* Hamburger active state */
-  #hamburger-btn.active .bar:nth-child(1) {
-    transform: translateY(8px) rotate(45deg);
+  /* WhatsApp CTA in mobile */
+  .mobile-wa-btn {
+    width: 100%;
+    justify-content: center;
+    margin-top: 0.25rem;
   }
 
-  #hamburger-btn.active .bar:nth-child(2) {
-    opacity: 0;
-    transform: scaleX(0);
-  }
-
-  #hamburger-btn.active .bar:nth-child(3) {
-    width: 1.5rem;
-    transform: translateY(-8px) rotate(-45deg);
-  }
-
-  /* When scrolled, hamburger uses dark color */
-  #navbar.scrolled #hamburger-btn .bar {
-    background-color: var(--color-espresso);
-  }
 </style>
 
 <script>
-  const navbar = document.getElementById('navbar') as HTMLElement;
-  const hamburgerBtn = document.getElementById('hamburger-btn') as HTMLButtonElement;
-  const mobileMenu = document.getElementById('mobile-menu') as HTMLElement;
+  const navbar = document.getElementById('navbar');
+  const hamburgerBtn = document.getElementById('hamburger-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
 
-  // Scroll handler
-  const handleScroll = () => {
-    if (window.scrollY > 60) {
-      navbar.classList.add('scrolled');
-    } else {
-      navbar.classList.remove('scrolled');
-    }
-  };
+  if (!navbar || !hamburgerBtn || !mobileMenu) {
+    console.warn('Navbar elements not found');
+  } else {
+    // ── SCROLL HANDLER ───────────────────────────────────────
+    const handleScroll = () => {
+      if (window.scrollY > 60) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    };
 
-  window.addEventListener('scroll', handleScroll, { passive: true });
-  handleScroll(); // run on load
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
 
-  // Mobile menu toggle
-  hamburgerBtn.addEventListener('click', () => {
-    const isOpen = hamburgerBtn.classList.toggle('active');
-    mobileMenu.classList.toggle('open', isOpen);
-    hamburgerBtn.setAttribute('aria-expanded', String(isOpen));
-    mobileMenu.setAttribute('aria-hidden', String(!isOpen));
-  });
+    // ── MOBILE MENU TOGGLE ───────────────────────────────────
+    const openMenu = () => {
+      hamburgerBtn.classList.add('active');
+      mobileMenu.classList.add('open');
+      hamburgerBtn.setAttribute('aria-expanded', 'true');
+      mobileMenu.setAttribute('aria-hidden', 'false');
+      navbar.classList.add('menu-open');
+      document.body.style.overflow = 'hidden'; // prevent bg scroll
+    };
 
-  // Close mobile menu when a link is clicked
-  mobileMenu.querySelectorAll('a').forEach((link) => {
-    link.addEventListener('click', () => {
+    const closeMenu = () => {
       hamburgerBtn.classList.remove('active');
       mobileMenu.classList.remove('open');
       hamburgerBtn.setAttribute('aria-expanded', 'false');
       mobileMenu.setAttribute('aria-hidden', 'true');
+      navbar.classList.remove('menu-open');
+      document.body.style.overflow = '';
+    };
+
+    hamburgerBtn.addEventListener('click', () => {
+      const isOpen = hamburgerBtn.classList.contains('active');
+      if (isOpen) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
     });
-  });
+
+    // Close when a nav link is clicked
+    mobileMenu.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', closeMenu);
+    });
+
+    // Close on resize to desktop
+    const mediaQuery = window.matchMedia('(min-width: 1024px)');
+    mediaQuery.addEventListener('change', (e) => {
+      if (e.matches) closeMenu();
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && hamburgerBtn.classList.contains('active')) {
+        closeMenu();
+        hamburgerBtn.focus();
+      }
+    });
+  }
 </script>

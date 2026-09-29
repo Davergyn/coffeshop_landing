@@ -38,6 +38,13 @@
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  /* Hide scrollbar — Firefox */
+  scrollbar-width: none;
+}
+
+/* Hide scrollbar — WebKit/Blink */
+html::-webkit-scrollbar {
+  display: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -61,6 +68,12 @@ body {
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+main {
+  margin: 0;
+  padding: 0;
 }
 
 /* =====================================================

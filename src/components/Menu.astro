@@ -1,11 +1,45 @@
 ---
-// Menu.astro — Full menu section with category tabs (CSS-only)
+// Menu.astro - Expanding Card Category Design (Image-driven accordion)
 
-import MenuCard from './MenuCard.astro';
-import { menuItems, categoryLabels } from '../data/menu';
-import type { MenuItem } from '../data/menu';
+import { menuItems } from '../data/menu';
 
-const categories: MenuItem['category'][] = ['coffee', 'non-coffee', 'tea', 'food', 'snack'];
+const categories = [
+  {
+    id: 'coffee',
+    label: 'COFFEE',
+    subtitle: 'Espresso, Pour Over & Cold Brew',
+    image: '/menu-coffee.jpg',
+    count: menuItems.filter(i => i.category === 'coffee').length,
+  },
+  {
+    id: 'non-coffee',
+    label: 'NON COFFEE',
+    subtitle: 'Matcha, Chocolate & Refreshing Drinks',
+    image: '/menu-noncoffee.jpg',
+    count: menuItems.filter(i => i.category === 'non-coffee').length,
+  },
+  {
+    id: 'tea',
+    label: 'TEA',
+    subtitle: 'Herbal, Floral & Fruit Infusions',
+    image: '/menu-tea.jpg',
+    count: menuItems.filter(i => i.category === 'tea').length,
+  },
+  {
+    id: 'food',
+    label: 'FOOD',
+    subtitle: 'Toast, Bowls & Brunch Plates',
+    image: '/menu-food.jpg',
+    count: menuItems.filter(i => i.category === 'food').length,
+  },
+  {
+    id: 'snack',
+    label: 'SNACK',
+    subtitle: 'Pastries, Cookies & Baked Goods',
+    image: '/menu-snack.jpg',
+    count: menuItems.filter(i => i.category === 'snack').length,
+  },
+];
 ---
 
 <section
@@ -14,173 +48,552 @@ const categories: MenuItem['category'][] = ['coffee', 'non-coffee', 'tea', 'food
   aria-labelledby="menu-heading"
 >
   <div class="container-base">
-    <!-- Header -->
     <div class="menu-header reveal">
       <p class="eyebrow mb-5">Full Menu</p>
       <h2 id="menu-heading" class="section-heading mb-4">
         Temukan minuman<br />
         <em class="italic" style="color: var(--color-caramel)">favoritmu.</em>
       </h2>
-      <p class="section-sub">
-        Setiap minuman dibuat fresh, setiap hari. Setiap makanan dibuat
-        dengan bahan-bahan segar pilihan.
-      </p>
-    </div>
-
-    <!-- Tab system (CSS-only using radio + label trick) -->
-    <div class="menu-tabs-wrap" role="tablist" aria-label="Kategori menu">
-      <!-- Hidden radio inputs — no JS needed for tabs -->
-      {categories.map((cat, i) => (
-        <input
-          type="radio"
-          name="menu-tab"
-          id={`tab-${cat}`}
-          class="sr-only"
-          checked={i === 0}
-          aria-label={categoryLabels[cat]}
-        />
-      ))}
-
-      <!-- Tab labels -->
-      <div class="tab-labels">
-        {categories.map((cat) => (
-          <label
-            for={`tab-${cat}`}
-            class="tab-label"
-            role="tab"
-          >
-            {categoryLabels[cat]}
-          </label>
-        ))}
-      </div>
-
-      <!-- Tab panels -->
-      <div class="tab-panels">
-        {categories.map((cat) => (
-          <div
-            class="tab-panel"
-            id={`panel-${cat}`}
-            role="tabpanel"
-            aria-labelledby={`tab-${cat}`}
-          >
-            <div class="menu-list">
-              {menuItems
-                .filter((item) => item.category === cat)
-                .map((item) => (
-                  <MenuCard item={item} variant="list" showImage={false} />
-                ))}
-            </div>
-          </div>
-        ))}
-      </div>
     </div>
   </div>
+
+  <div class="expanding-cards-wrap reveal">
+    {categories.map((cat) => (
+      <div
+        class="exp-card"
+        id={`card-${cat.id}`}
+        role="button"
+        tabindex="0"
+        aria-label={`Lihat kategori ${cat.label}`}
+        data-category={cat.id}
+      >
+        <div
+          class="exp-card__bg"
+          style={`background-image: url('${cat.image}')`}
+          aria-hidden="true"
+        ></div>
+        <div class="exp-card__overlay" aria-hidden="true"></div>
+        <div class="exp-card__content">
+          <span class="exp-card__badge">{cat.count} items</span>
+          <span class="exp-card__rotated-label" aria-hidden="true">{cat.label}</span>
+          <div class="exp-card__info">
+            <h3 class="exp-card__title">{cat.label}</h3>
+            <p class="exp-card__subtitle">{cat.subtitle}</p>
+            <a
+              href={`#menu-items-${cat.id}`}
+              class="exp-card__cta"
+              aria-label={`Lihat semua menu ${cat.label}`}
+            >
+              <span>Lihat Menu</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <div class="container-base">
+    {categories.map((cat) => (
+      <div class="menu-items-panel" id={`menu-items-${cat.id}`} data-panel={cat.id}>
+        <div class="menu-items-header">
+          <h3 class="menu-items-title">{cat.label}</h3>
+          <p class="menu-items-sub">{cat.subtitle}</p>
+        </div>
+        <div class="menu-items-grid">
+          {menuItems.filter(item => item.category === cat.id).map(item => (
+            <div class="menu-item-card">
+              {(item.isSignature || item.isBestSeller) && (
+                <div class="menu-item-badges">
+                  {item.isSignature && <span class="badge badge--signature">Signature</span>}
+                  {item.isBestSeller && <span class="badge badge--bestseller">Favorit</span>}
+                </div>
+              )}
+              <div class="menu-item-body">
+                <div>
+                  <h4 class="menu-item-name">{item.name}</h4>
+                  <p class="menu-item-desc">{item.description}</p>
+                </div>
+                <span class="menu-item-price">{item.price}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
 </section>
+
+<script>
+  const cards = document.querySelectorAll('.exp-card');
+  const panels = document.querySelectorAll('.menu-items-panel');
+
+  function activateCard(card) {
+    const isActive = card.classList.contains('is-active');
+    cards.forEach(c => c.classList.remove('is-active'));
+    panels.forEach(p => p.classList.remove('is-open'));
+    if (!isActive) {
+      card.classList.add('is-active');
+      const catId = card.dataset.category;
+      const panel = document.getElementById('menu-items-' + catId);
+      if (panel) {
+        panel.classList.add('is-open');
+        setTimeout(() => {
+          panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 350);
+      }
+    }
+  }
+
+  cards.forEach(card => {
+    card.addEventListener('click', () => activateCard(card));
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        activateCard(card);
+      }
+    });
+  });
+</script>
 
 <style>
   .menu-section {
     background-color: var(--color-cream);
+    overflow: hidden;
   }
 
   .menu-header {
     text-align: center;
     max-width: 600px;
     margin-inline: auto;
-    margin-bottom: 3.5rem;
+    margin-bottom: 3rem;
   }
 
-  .menu-header .section-sub {
-    margin-inline: auto;
-  }
-
-  /* ── TAB SYSTEM (CSS-only) ── */
-  .menu-tabs-wrap {
-    max-width: 840px;
-    margin-inline: auto;
-  }
-
-  /* Hide all radio inputs but keep them accessible */
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0,0,0,0);
-    white-space: nowrap;
-    border-width: 0;
-  }
-
-  /* Tab labels container */
-  .tab-labels {
+  .expanding-cards-wrap {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    justify-content: center;
-    margin-bottom: 2.5rem;
+    width: 100%;
+    height: 480px;
+    gap: 0;
   }
 
-  .tab-label {
+  .exp-card {
+    position: relative;
+    flex: 1 1 0;
+    overflow: hidden;
+    cursor: pointer;
+    transition: flex 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+    outline: none;
+  }
+
+  @media (hover: hover) and (min-width: 1024px) {
+    .expanding-cards-wrap:has(.exp-card:hover) .exp-card {
+      flex: 0.35 1 0;
+    }
+    .expanding-cards-wrap:has(.exp-card:hover) .exp-card:hover {
+      flex: 3 1 0;
+    }
+  }
+
+  .expanding-cards-wrap:has(.exp-card.is-active) .exp-card {
+    flex: 0.35 1 0;
+  }
+  .expanding-cards-wrap .exp-card.is-active {
+    flex: 3 1 0 !important;
+  }
+
+  .exp-card__bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1), filter 0.65s ease;
+    will-change: transform, filter;
+  }
+
+  .exp-card:hover .exp-card__bg,
+  .exp-card.is-active .exp-card__bg {
+    transform: scale(1.05);
+    filter: brightness(0.7);
+  }
+
+  .exp-card__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(14, 9, 5, 0.88) 0%,
+      rgba(14, 9, 5, 0.35) 50%,
+      rgba(14, 9, 5, 0.08) 100%
+    );
+  }
+
+  .exp-card__content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1.5rem;
+    z-index: 1;
+  }
+
+  .exp-card__badge {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    font-family: var(--font-sans);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.8);
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 999px;
+    padding: 0.25rem 0.75rem;
+    opacity: 0;
+    transform: translateY(-6px);
+    transition: opacity 0.4s ease 0.15s, transform 0.4s ease 0.15s;
+  }
+
+  .exp-card:hover .exp-card__badge,
+  .exp-card.is-active .exp-card__badge {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .exp-card__rotated-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-90deg);
+    font-family: var(--font-sans);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.85);
+    white-space: nowrap;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+  }
+
+  .exp-card:hover .exp-card__rotated-label,
+  .exp-card.is-active .exp-card__rotated-label {
+    opacity: 0;
+  }
+
+  .exp-card__info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    transform: translateY(8px);
+    transition: transform 0.4s ease;
+  }
+
+  .exp-card:hover .exp-card__info,
+  .exp-card.is-active .exp-card__info {
+    transform: translateY(0);
+  }
+
+  .exp-card__title {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #fff;
+    line-height: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .exp-card__subtitle {
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.35s ease 0.1s, transform 0.35s ease 0.1s;
+    max-width: 280px;
+  }
+
+  .exp-card:hover .exp-card__subtitle,
+  .exp-card.is-active .exp-card__subtitle {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .exp-card__cta {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    padding: 0.6rem 1.375rem;
+    gap: 0.4rem;
+    margin-top: 0.35rem;
     font-family: var(--font-sans);
-    font-size: 0.8rem;
-    font-weight: 500;
+    font-size: 0.75rem;
+    font-weight: 600;
     letter-spacing: 0.06em;
-    text-transform: uppercase;
-    border-radius: 9999px;
-    border: 1.5px solid var(--color-border);
-    color: var(--color-muted);
-    cursor: pointer;
-    transition: all 0.2s ease;
-    user-select: none;
-    min-height: 44px;
+    color: var(--color-caramel);
+    text-decoration: none;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.35s ease 0.18s, transform 0.35s ease 0.18s, color 0.2s ease;
   }
 
-  .tab-label:hover {
-    border-color: var(--color-caramel);
-    color: var(--color-brown);
+  .exp-card__cta svg {
+    transition: transform 0.2s ease;
   }
 
-  /* Tab panels — hide all by default */
-  .tab-panel {
+  .exp-card__cta:hover {
+    color: #fff;
+  }
+
+  .exp-card__cta:hover svg {
+    transform: translateX(3px);
+  }
+
+  .exp-card:hover .exp-card__cta,
+  .exp-card.is-active .exp-card__cta {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .menu-items-panel {
     display: none;
+    padding-top: 3.5rem;
+    padding-bottom: 1rem;
   }
 
-  /* CSS magic: when radio is checked, show the corresponding panel and style label */
-  #tab-coffee:checked ~ .tab-panels #panel-coffee,
-  #tab-non-coffee:checked ~ .tab-panels #panel-non-coffee,
-  #tab-tea:checked ~ .tab-panels #panel-tea,
-  #tab-food:checked ~ .tab-panels #panel-food,
-  #tab-snack:checked ~ .tab-panels #panel-snack {
+  .menu-items-panel.is-open {
     display: block;
+    animation: panelReveal 0.5s ease forwards;
   }
 
-  /* Active tab label styling */
-  #tab-coffee:checked ~ .tab-labels label[for="tab-coffee"],
-  #tab-non-coffee:checked ~ .tab-labels label[for="tab-non-coffee"],
-  #tab-tea:checked ~ .tab-labels label[for="tab-tea"],
-  #tab-food:checked ~ .tab-labels label[for="tab-food"],
-  #tab-snack:checked ~ .tab-labels label[for="tab-snack"] {
-    background-color: var(--color-espresso);
-    border-color: var(--color-espresso);
-    color: var(--color-cream);
+  @keyframes panelReveal {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
 
-  /* Menu list */
-  .menu-list {
-    background-color: var(--color-white);
+  .menu-items-header {
+    margin-bottom: 2rem;
+  }
+
+  .menu-items-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 500;
+    color: var(--color-espresso);
+    letter-spacing: -0.02em;
+  }
+
+  .menu-items-sub {
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    color: var(--color-muted);
+    margin-top: 0.25rem;
+  }
+
+  .menu-items-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    background: var(--color-white);
     border: 1px solid var(--color-border);
-    border-radius: 8px;
-    padding: 0 1.5rem;
+    border-radius: 12px;
+    overflow: hidden;
   }
 
   @media (min-width: 768px) {
-    .menu-list {
-      padding: 0 2rem;
+    .menu-items-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .menu-item-card {
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid var(--color-border);
+    position: relative;
+    transition: background-color 0.2s ease;
+  }
+
+  @media (min-width: 768px) {
+    .menu-item-card:nth-child(odd) {
+      border-right: 1px solid var(--color-border);
+    }
+    .menu-item-card:nth-last-child(-n+2) {
+      border-bottom: none;
+    }
+    .menu-item-card:last-child:nth-child(odd) {
+      border-bottom: none;
+    }
+  }
+
+  .menu-item-card:last-child {
+    border-bottom: none;
+  }
+
+  .menu-item-card:hover {
+    background-color: var(--color-cream);
+  }
+
+  .menu-item-badges {
+    display: flex;
+    gap: 0.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-sans);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.65rem;
+    border-radius: 999px;
+  }
+
+  .badge--signature {
+    background: rgba(185, 122, 63, 0.12);
+    color: var(--color-caramel);
+    border: 1px solid rgba(185, 122, 63, 0.25);
+  }
+
+  .badge--bestseller {
+    background: rgba(28, 20, 16, 0.07);
+    color: var(--color-brown);
+    border: 1px solid rgba(107, 63, 31, 0.2);
+  }
+
+  .menu-item-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .menu-item-name {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: var(--color-espresso);
+    margin-bottom: 0.3rem;
+  }
+
+  .menu-item-desc {
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    color: var(--color-muted);
+    line-height: 1.55;
+    max-width: 38ch;
+  }
+
+  .menu-item-price {
+    font-family: var(--font-sans);
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--color-brown);
+    white-space: nowrap;
+    flex-shrink: 0;
+    padding-top: 0.1rem;
+  }
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .expanding-cards-wrap {
+      flex-direction: column;
+      height: auto;
+    }
+    .exp-card {
+      flex: 0 0 88px;
+      width: 100%;
+    }
+    .expanding-cards-wrap:has(.exp-card:hover) .exp-card {
+      flex: 0 0 70px;
+    }
+    .expanding-cards-wrap:has(.exp-card:hover) .exp-card:hover {
+      flex: 0 0 320px;
+    }
+    .expanding-cards-wrap:has(.exp-card.is-active) .exp-card {
+      flex: 0 0 70px;
+    }
+    .expanding-cards-wrap .exp-card.is-active {
+      flex: 0 0 320px !important;
+    }
+    .exp-card__rotated-label {
+      top: 50%;
+      left: 2rem;
+      transform: translateY(-50%);
+    }
+    .exp-card__content {
+      flex-direction: row;
+      align-items: flex-end;
+      justify-content: space-between;
+      padding: 1.25rem 2rem;
+    }
+    .exp-card__info {
+      flex-direction: row;
+      align-items: center;
+      gap: 1.5rem;
+      transform: none !important;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .expanding-cards-wrap {
+      flex-direction: column;
+      height: auto;
+    }
+    .exp-card {
+      flex: 0 0 72px;
+      width: 100%;
+    }
+    .expanding-cards-wrap:has(.exp-card.is-active) .exp-card {
+      flex: 0 0 64px;
+    }
+    .expanding-cards-wrap .exp-card.is-active {
+      flex: 0 0 260px !important;
+    }
+    .exp-card__rotated-label {
+      top: 50%;
+      left: 1.5rem;
+      transform: translateY(-50%);
+    }
+    .exp-card__content {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.5rem;
+    }
+    .exp-card__info {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.2rem;
+    }
+    .exp-card__badge {
+      top: 50%;
+      right: 1.25rem;
+      opacity: 1 !important;
+      transform: translateY(-50%) !important;
+    }
+    .menu-items-grid {
+      grid-template-columns: 1fr;
+    }
+    .menu-item-card:nth-child(odd) {
+      border-right: none;
+    }
+    .menu-item-card:nth-last-child(-n+2) {
+      border-bottom: 1px solid var(--color-border);
+    }
+    .menu-item-card:last-child {
+      border-bottom: none;
     }
   }
 </style>
