@@ -128,7 +128,7 @@ const categories = [
   const cards = document.querySelectorAll('.exp-card');
   const panels = document.querySelectorAll('.menu-items-panel');
 
-  function activateCard(card) {
+  function activateCard(card: HTMLElement) {
     const isActive = card.classList.contains('is-active');
     cards.forEach(c => c.classList.remove('is-active'));
     panels.forEach(p => p.classList.remove('is-open'));
@@ -146,11 +146,11 @@ const categories = [
   }
 
   cards.forEach(card => {
-    card.addEventListener('click', () => activateCard(card));
-    card.addEventListener('keydown', (e) => {
+    card.addEventListener('click', () => activateCard(card as HTMLElement));
+    card.addEventListener('keydown', (e: KeyboardEvent) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
-        activateCard(card);
+        activateCard(card as HTMLElement);
       }
     });
   });
